@@ -1,0 +1,34 @@
+services:
+  api-gateway:
+    build: ./http-root-gateway
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./http-root-gateway/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+
+  user-microservices:
+    build: ./user-microservices
+    # no ports  because it's an internal microservice
+    volumes:
+      - ./user-microservices/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - NODE_ENV=development
+
+  paymnet-microservices:
+    build: ./payment-microservices
+    # no ports  because it's an internal microservice
+    volumes:
+      - ./payment-microservices/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - NODE_ENV=development
+
+  nats:
+    image: nats
+    ports:
+      - '4222:4222'
